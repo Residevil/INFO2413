@@ -34,8 +34,8 @@ if ($conn->query($db) === TRUE) {
 
         $herbs = "CREATE TABLE herbs (
             herb_id INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY, 
-            herb_name INT(20) NOT NULL ,
-            Image BIN(10) NOT NULL, 
+            herb_name VARCHAR(50) NOT NULL ,
+            image_name VARCHAR(50) NOT NULL, 
             herb_description VARCHAT(100) NOT NULL,
             medical_use VARCHAR (255) NOT NULL,
             sample_formula VARCHAR (100) NOT NULL
