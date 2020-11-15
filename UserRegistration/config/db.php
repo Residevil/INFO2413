@@ -9,9 +9,11 @@
 require 'constants.php'; //use to contain sensitive data
         
 
-$conn = new mysqli(DB_HOST, DB_USER, DB_PASS, DB_NAME) or die ('Database error: ' . $conn->connect_error);
+$conn = new mysqli(DB_HOST, DB_USER, DB_PASS) or die ('Database error: ' . $conn->connect_error);
+$db = "CREATE DATABASE INFO2413";
+$conn->query($db);
 
-// sql to create table
+// sql to create table. Create
 $users = "CREATE TABLE users (
     id INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY, 
     username VARCHAR20) NOT NULL , 
@@ -19,13 +21,15 @@ $users = "CREATE TABLE users (
     verified TINYINT(255) NOT NULL, 
     token VARCHAR(100) NOT NULL, 
     password VARCHAR(100) NOT NULL,
-    usertype_id INT(11) NOT NULL FOREIGN KEY REFERENCE employee_type (id)
+    usertype_id INT(11) NOT NULL FOREIGN KEY REFERENCE user_type (id)
 )";
+$conn->query($users)
 
 $user_type = "CREATE TABLE user_type (
     id INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,  
     usertype VARCHAT(50) NOT NULL
 )";
+$conn->query($user_type);
 
 $herbs = "CREATE TABLE herbs (
     herb_id INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY, 
@@ -35,8 +39,7 @@ $herbs = "CREATE TABLE herbs (
     medical_use VARCHAR (255) NOT NULL,
     sample_formula VARCHAR (100) NOT NULL
 )";
-
-
+$conn->query($herbs);
 
 
 
