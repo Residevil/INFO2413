@@ -10,7 +10,7 @@
 
 if(isset($_GET['search_btn'])) {
     $search = $_GET['search'];
-    $herbQuery = "SELECT herb_name FROM herbs WHERE herb_name = $search";
+    $herbQuery = "SELECT medical_uses FROM herbs WHERE herb_name = $search";
     $stmt = $conn->prepare($herbQuery);
     $stmt->bind_param('s', $search);
     $stmt->execute();
