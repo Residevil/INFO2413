@@ -9,10 +9,11 @@ if(isset($_GET['token'])) {
     verifyEmail($token);
 }
 
-if(isset($_SESSION['employee_id'])) {
-    $edit = 'visible';
+if($_SESSION['usertype'] == "RegularUser") {
+    $edit = 'hidden';
+} else {
+    $edit = "visible";
 }
-
 
 if(isset($_POST['add'])) {
     header('location: add.php');
