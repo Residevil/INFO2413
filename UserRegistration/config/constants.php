@@ -11,5 +11,20 @@ define('DB_USER', 'root');
 define('DB_PASS', '');
 define('DB_NAME', 'INFO2413');
 
+$username = "";
+$email = "";
+$errors = array();
+
+$edit = '';
+$hidden = 'hidden';
+$table = 'hidden';
+$output = '';
+
+$herb_name = '';
+$symptoms = '';
+$medicinal_uses = '';
+$image = '';
+$botanical_description = '';
+$sample_formula = '';
 
 ?>
