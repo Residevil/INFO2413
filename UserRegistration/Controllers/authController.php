@@ -10,10 +10,6 @@ session_start();
 
 require_once 'config/db.php';
 
-$username = "";
-$email = "";
-$errors = array();
-
 //if user clicks on the register button
 
 if (isset($_POST['register-btn'])) {
