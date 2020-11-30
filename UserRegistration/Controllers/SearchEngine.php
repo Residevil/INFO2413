@@ -1,23 +1,33 @@
 <?php
 
-/* 
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+require_once 'config/db.php';
 
-//Simple search
 
-if(isset($_GET['search_btn'])) {
-    $search = $_GET['search'];
-    $herbQuery = "SELECT medical_uses FROM herbs WHERE herb_name = $search";
-    $stmt = $conn->prepare($herbQuery);
-    $stmt->bind_param('s', $search);
-    $stmt->execute();
-    $result = $stmt->get_result();
-    if($result->num_rows > 0) {
-        echo $result;
+
+if(isset($_POST['search-btn'])) {
+    $search = $_POST['search'];
+    //$search = preg_replace("#[^0-9a-z\s]#i","",$search);
+
+    $words = explode(' ', $search);
+    $regex = implode('|', $words);
+
+    $query = "SELECT * FROM herbs WHERE herb_name = '". $search ."'";
+    $result = $conn->query($query) or die($conn->error);
+    $count = $result->num_rows;
+    if($count == 0 || empty($search)){
+        $output = 'There are zero results';
+    } else{
+        $table='';
+        $hidden = '';
+        while($row = $result->fetch_array()) {
+            $_SESSION['herb_id'] = $row['herb_id'];
+            $_SESSION['herb_name'] = $row['herb_name'];
+            $_SESSION['symptoms'] = $row['symptoms'];
+            $_SESSION['medicinal_uses'] = $row['medicinal_uses'];
+            $_SESSION['botanical_description'] = $row['botanical_description'];
+            $_SESSION['sample_formula'] = $row['sample_formula'];	
+            $_SESSION['image'] = "<img src='images/".$row['image']."' width=480 height=270 >"; 
+        }
     }
 }
 
-?>
