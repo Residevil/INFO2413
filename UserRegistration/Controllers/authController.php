@@ -22,8 +22,8 @@ if (isset($_POST['register-btn'])) {
     $email = $_POST['email'];
     $password = $_POST['password'];
     $passwordConf = $_POST['passwordConf'];
-
-
+    
+    
     //validation
     
     if(empty($usertype)) {
@@ -50,7 +50,7 @@ if (isset($_POST['register-btn'])) {
     }
 
     //unique email validation
-    $emailQuery = "SELECT * FROM employee WHERE email=? LIMIT 1";
+    $emailQuery = "SELECT * FROM users WHERE email=? LIMIT 1";
     $stmt = $conn->prepare($emailQuery);
     $stmt->bind_param('s', $email);
     $stmt->execute();
@@ -79,7 +79,16 @@ if (isset($_POST['register-btn'])) {
             $_SESSION['email'] = $email;
             $_SESSION['verified'] = $verified;
             $_SESSION['usertype'] = $usertype;
-           
+            //sendVerificationEmail($email, $token);
+//            $to = $_SESSION['email'];
+//            $subject = "Email Verification";
+//            $message = "<a href='http://localhost/UserRegistration/index.php?token='$token'>Register Account</a>";
+//            $headers = "From: alexauieong@hotmail.com \r\n";
+//            $headers .= "MIME-Version: 1.0"."\r\n";
+//            $headers .= "Content-type:text/html;charset=UTF-8"."\r\n";
+//            
+//            mail($to, $subject, $message, $headers);
+            
             //flash message
             $_SESSION['message'] = "Login successful";
             $_SESSION['alert-class'] = "alert-success";
@@ -147,25 +156,26 @@ if(isset($_GET['logout'])) {
     exit(0);
 }
 
-//function verifyEmail($token) {
-//    global $conn;
-//    $sql = "SELECT verified, token FROM users WHERE verified=0 AND token='$token' LIMIT 1";
-//    $result = $conn->query($sql);
-//
-//    if ($result->num_rows > 0) {
-//        $user = $result->fetch_assoc();
-//        $update = "UPDATE users SET verified=1 WHERE token='$token' LIMIT 1";
-//
-//        if ($update) {
-//            $_SESSION['username'] = $user['username'];
-//            $_SESSION['email'] = $user['email'];
-//            $_SESSION['verified'] = true;
-//            $_SESSION['message'] = "Your email address has been verified successfully";
-//            $_SESSION['type'] = 'alert-success';
-//            header('location: index.php');
-//            exit();
-//        }
-//    } else {
-//        echo "User not found!";
-//    }
-//}
+function verifyEmail($token) {
+    global $conn;
+    $sql = "SELECT verified, token FROM users WHERE verified=0 AND token='$token' LIMIT 1";
+    $result = $conn->query($sql);
+
+    if ($result->num_rows > 0) {
+        $user = $result->fetch_assoc();
+        $update = "UPDATE users SET verified=1 WHERE token='$token' LIMIT 1";
+
+        if ($update) {
+            $_SESSION['username'] = $user['username'];
+            $_SESSION['email'] = $user['email'];
+            $_SESSION['verified'] = true;
+            $_SESSION['message'] = "Your email address has been verified successfully";
+            $_SESSION['type'] = 'alert-success';
+            $_SESSION['usertype'] = $user['usertype'];
+            header('location: index.php');
+            exit();
+        }
+    } else {
+        echo "User not found!";
+    }
+}
