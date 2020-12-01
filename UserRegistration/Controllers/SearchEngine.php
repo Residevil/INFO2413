@@ -34,11 +34,8 @@ if(isset($_POST['search-btn'])) {
 if(isset($_POST['user-btn'])) {
     $search = $_POST['search'];
 
-    $query = "SELECT * FROM users WHERE username=? OR email=? ";
-    $stmt = $conn->prepare($query) or die($conn->error);
-    $stmt->bind_param('ss', $search, $search);
-    $stmt->execute();
-    $result = $stmt->get_result();
+    $query = "SELECT * FROM users WHERE username='".$search."' OR email='".$search."' ";
+    $result = $conn->query($query) or die($conn->error);
     $count = $result->num_rows;
     if($count == 0 || empty($search)){
         $output = 'There are zero results';
@@ -46,9 +43,15 @@ if(isset($_POST['user-btn'])) {
         $table='';
         $hidden = '';
         while($row = $result->fetch_array()) {
-            $id = $row['id'];
-            $username = $row['username']; 
-            $email = $row['email'];
+            $_SESSION['edit_id'] = $row['id'];
+            $_SESSION['edit_username'] = $row['username']; 
+            $_SESSION['edit_email'] = $row['email'];
+            $_SESSION['edit_usertype_id'] = $row['usertype_id'];
+        }
+        $sql = "SELECT * FROM user_type WHERE id ='".$usertype_id."'";
+        $result = $conn->query($sql);
+        while ($row = $result->fetch_array()) {
+            $_SESSION['edit_usertype'] = $row['usertype'];
         }
     }
 }
