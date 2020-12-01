@@ -1,6 +1,5 @@
 <?php 
 require_once 'config/db.php';
-require_once 'Controllers/ModifyHerbController.php';
 require_once 'Controllers/authController.php';
 require_once 'Controllers/SearchEngine.php';
 
