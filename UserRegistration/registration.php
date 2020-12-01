@@ -26,12 +26,12 @@
                 <?php endif; ?>
                 
                 <div class="form-group">
-                    <label for="usertype">User type</label>
-                    <select name="usertype">
+                    <label for="usertype_id">User type</label>
+                    <select name="usertype_id">
                         <option value=""></option>
-                        <option value="Administrator"> Administrator </option>
-                        <option value="Herbalist"> Herbalist </option>
-                        <option value="RegularUser"> Regular User </option>
+                        <option value="1"> Administrator </option>
+                        <option value="2"> Herbalist </option>
+                        <option value="3"> Regular User </option>
                     </select>
                 </div>
                 
