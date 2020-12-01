@@ -8,14 +8,14 @@ if(isset($_POST['editherb-btn'])) {
     $herb_id = $_SESSION['herb_id'];
     $herb_name = $_POST['herb_name'];
     $symptoms = $_POST['symptoms'];
-    $medical_use = $_POST['medical_use'];
-    $botanical_description = $_POST['herb_description'];
+    $medicinal_uses = $_POST['medicinal_uses'];
+    $botanical_description = $_POST['botanical_description'];
     $sample_formula = $_POST['sample_formula'];
-    $image = $_POST['image_name'];
+    $image = $_POST['image'];
 
 	  
   	// Get name of images
-  	$Get_image_name = $_FILES['image_name']['name'];
+  	$Get_image_name = $_FILES['image']['name'];
   	
   	// image Path
   	$image_Path = "images/".basename($Get_image_name);
@@ -28,12 +28,12 @@ if(isset($_POST['editherb-btn'])) {
         $errors['symptoms'] = "symptoms required";
     }
 
-    if(empty($medical_use)) {
-        $errors['medical_use'] = "medical uses required";
+    if(empty($medicinal_uses)) {
+        $errors['medicinal_uses'] = "medical uses required";
     }
 
     if(empty($botanical_description)) {
-        $errors['herb_description'] = "botanical description required";
+        $errors['botanical_description'] = "botanical description required";
     }    
 
     if(empty($sample_formula)) {
@@ -43,13 +43,13 @@ if(isset($_POST['editherb-btn'])) {
     $editHerb = "UPDATE herbs SET 
             herb_name=?,
             symptoms=?,      
-            medical_use=?,      
-            image_name=?,
-            herb_description=?,
+            medicinal_uses=?,      
+            image=?,
+            botanical_description=?,
             sample_formula=?        
             WHERE herb_id = ?";
     $stmt = $conn->prepare($editHerb);
-    $stmt->bind_param('ssssssi', $herb_name, $symptoms, $medical_use, $Get_image_name, $botanical_description, $sample_formula, $herb_id);
+    $stmt->bind_param('ssssssi', $herb_name, $symptoms, $medicinal_uses, $Get_image_name, $botanical_description, $sample_formula, $herb_id);
     $stmt->execute();
     $_SESSION['message'] = "Herb is updated successfully.";
     $_SESSION['alert-class'] = "alert-success";        
@@ -97,13 +97,13 @@ if(isset($_POST['editherb-btn'])) {
                     <textarea name="symptoms" row="10" cols="30" class="form-control form-control-lg" required><?php echo $_SESSION['symptoms']; ?></textarea>
                 </div>
                 <div class="form-group">
-                    <label for="medical_use">Medicinal Uses: </label>
-                    <textarea name="medical_use" row="10" cols="30" class="form-control form-control-lg" required><?php echo $_SESSION['medical_use']; ?></textarea>
+                    <label for="medicinal_uses">Medicinal Uses: </label>
+                    <textarea name="medicinal_uses" row="10" cols="30" class="form-control form-control-lg" required><?php echo $_SESSION['medicinal_uses']; ?></textarea>
                 </div>
 
                 <div class="form-group">
-                    <label for="herb_description">Botanical Description: </label>
-                    <textarea name="herb_description" row="10" cols="30"  class="form-control form-control-lg" required><?php echo $_SESSION['herb_description']; ?></textarea>
+                    <label for="botanical_description">Botanical Description: </label>
+                    <textarea name="botanical_description" row="10" cols="30"  class="form-control form-control-lg" required><?php echo $_SESSION['botanical_description']; ?></textarea>
                 </div>
 
                 <div class="form-group">
@@ -112,8 +112,8 @@ if(isset($_POST['editherb-btn'])) {
                 </div>
 
 				<div class=form-group>
-                    <label for="image_name">Image: </label>
-					<input type="file" name="image_name">  	
+                    <label for="image">Image: </label>
+					<input type="file" name="image">  	
 				</div>
 
                 <div>
