@@ -7,7 +7,7 @@ CREATE TABLE users (
     PRIMARY KEY(id)
 );
 
-CREATE TABLE EmployeeType (
+CREATE TABLE herbs (
     herb_id INT(11) NOT NULL AUTO_INCREMENT,
     herb_name VARCHAR(50) NOT NULL,
     symptoms VARCHAR(255),
