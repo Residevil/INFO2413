@@ -9,23 +9,38 @@
 define('DB_HOST', 'localhost');
 define('DB_USER', 'root');
 define('DB_PASS', '');
-define('DB_NAME', 'INFO 2413');
+define('DB_NAME', 'INFO2413');
 
+
+
+$id = "";
 $username = "";
 $email = "";
+$usertype = "";
+$usertype_id = "";
 $errors = array();
 
-$edit = '';
-$hidden = 'hidden';
-$table = 'hidden';
-$output = '';
+$editH = "";
+$editU = "";
+$H = "";
+$U = "";
+$hidden = "hidden";
+$table = "hidden";
+$output = "";
+$ShowIndex = "hidden";
 
-$herb_name = '';
-$symptoms = '';
-$medical_use = '';
-$image = '';
-$botanical_description = '';
-$sample_formula = '';
+$t = "register";
+$b = "register";
+$hide = '';
+$title = "User Registration";
+$button = "Register";
+
+$herb_name = "";
+$symptoms = "";
+$medicinal_uses = "";
+$image = "";
+$botanical_description = "";
+$sample_formula = "";
+
 
 ?>
-
