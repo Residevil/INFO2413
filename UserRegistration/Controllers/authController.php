@@ -10,10 +10,11 @@ session_start();
 
 require_once 'config/db.php';
 
+
 //if user clicks on the register button
 
 if (isset($_POST['register-btn'])) {
-    $usertype_id = $_POST['usertype_id'];
+    $usertype = $_POST['usertype'];
     $username = $_POST['username'];
     $email = $_POST['email'];
     $password = $_POST['password'];
@@ -22,9 +23,16 @@ if (isset($_POST['register-btn'])) {
     
     //validation
     
-    if(empty($usertype_id)) {
-        $errors['usertype_id'] = "Usertype required";
+    if(empty($usertype)) {
+        $errors['usertype'] = "Usertype required";
     }
+
+    $sql = "SELECT * FROM user_type WHERE usertype = '".$usertype."'";
+    $result = $conn->query($sql);
+    while ($row = $result->fetch_array()) {
+        $usertype_id = $row['id'];
+    }
+
     if(empty($username)) {
         $errors['username'] = "Username required";
     }
@@ -68,27 +76,32 @@ if (isset($_POST['register-btn'])) {
         $stmt->bind_param('sssi', $username, $email, $password, $usertype_id);
         
         if($stmt->execute()) {
-            //login user
-            $user_id = $conn->insert_id;
-            $_SESSION['id'] = $user_id;
-            $_SESSION['username'] = $username;
-            $_SESSION['email'] = $email;
-            $_SESSION['usertype_id'] = $usertype_id;
-            //sendVerificationEmail($email, $token);
-//            $to = $_SESSION['email'];
-//            $subject = "Email Verification";
-//            $message = "<a href='http://localhost/UserRegistration/index.php?token='$token'>Register Account</a>";
-//            $headers = "From: alexauieong@hotmail.com \r\n";
-//            $headers .= "MIME-Version: 1.0"."\r\n";
-//            $headers .= "Content-type:text/html;charset=UTF-8"."\r\n";
-//            
-//            mail($to, $subject, $message, $headers);
-            
-            //flash message
-            $_SESSION['message'] = "Login successful";
-            $_SESSION['alert-class'] = "alert-success";
-            header('location: index.php');
-            exit();           
+
+            //adminstrator adding new user
+            if(isset($_SESSION['id'])) {
+                //flash message
+                $_SESSION['message'] = "New user is added successful";
+                $_SESSION['alert-class'] = "alert-success";
+                header('location: index.php');
+                exit();           
+            }
+            else {
+                //login user
+                $user_id = $conn->insert_id;
+                $_SESSION['id'] = $user_id;
+                $_SESSION['username'] = $username;
+                $_SESSION['email'] = $email;
+                $_SESSION['usertype'] = $usertype;
+                $_SESSION['usertype_id'] = $usertype_id;
+
+
+                
+                //flash message
+                $_SESSION['message'] = "Login successful";
+                $_SESSION['alert-class'] = "alert-success";
+                header('location: index.php');
+                exit();   
+            }        
         } else {
             $errors['db_error'] = "Database error: failed to register";
         }
@@ -118,14 +131,15 @@ if (isset($_POST['login-btn'])) {
         $stmt->bind_param('ss', $username, $username);
         $stmt->execute();
         $result = $stmt->get_result();
-        $user = $result->fetch_assoc();
+        $user = $result->fetch_array();
 
         if(password_verify($password, $user['password'])) {
             // correct password, allow login
             $_SESSION['id'] = $user['id'];
             $_SESSION['username'] = $user['username'];
             $_SESSION['email'] = $user['email'];
-            $_SESSION['usertype_id'] = $user['usertype_id'];
+            $_SESSION['verified'] = $user['verified'];
+            $_SESSION['usertype'] = $user['usertype'];
             //flash message
             $_SESSION['message'] = "Login successful";
             $_SESSION['alert-class'] = "alert-success";
@@ -144,31 +158,8 @@ if(isset($_GET['logout'])) {
     unset($_SESSION['id']);
     unset($_SESSION['username']);
     unset($_SESSION['email']);
-    unset($_SESSION['usertype_id']);    
+    unset($_SESSION['verified']);
+    unset($_SESSION['usertype']);    
     header('location: login.php');
     exit(0);
-}
-
-function verifyEmail($token) {
-    global $conn;
-    $sql = "SELECT verified, token FROM users WHERE verified=0 AND token='$token' LIMIT 1";
-    $result = $conn->query($sql);
-
-    if ($result->num_rows > 0) {
-        $user = $result->fetch_assoc();
-        $update = "UPDATE users SET verified=1 WHERE token='$token' LIMIT 1";
-
-        if ($update) {
-            $_SESSION['username'] = $user['username'];
-            $_SESSION['email'] = $user['email'];
-            $_SESSION['verified'] = true;
-            $_SESSION['message'] = "Your email address has been verified successfully";
-            $_SESSION['type'] = 'alert-success';
-            $_SESSION['usertype_id'] = $user['usertype_id'];
-            header('location: index.php');
-            exit();
-        }
-    } else {
-        echo "User not found!";
-    }
 }
