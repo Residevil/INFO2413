@@ -13,11 +13,11 @@ require_once 'config/db.php';
 if(isset($_POST['addherb-btn'])) {
     $herb_name = $_POST['herb_name'];
     $symptoms = $_POST['symptoms'];
-    $medical_use = $_POST['medical_use'];
-    $botanical_description = $_POST['herb_description'];
+    $medicinal_uses = $_POST['medicinal_uses'];
+    $botanical_description = $_POST['botanical_description'];
     $sample_formula = $_POST['sample_formula'];
     // Get name of images
-    $Get_image_name = $_FILES['image_name']['name'];
+    $Get_image_name = $_FILES['image']['name'];
   	
     // image Path
     $image_Path = "images/".basename($Get_image_name);
@@ -30,13 +30,13 @@ if(isset($_POST['addherb-btn'])) {
     // if cannot find the input herb name in the herbs table
     // that means its a new herb, so add it into the herbs table
     if($count == 0) {
-        $addHerb = "INSERT INTO herbs (herb_name, symptoms, medical_use, image_name, herb_description, sample_formula)
+        $addHerb = "INSERT INTO herbs (herb_name, symptoms, medicinal_uses, image , botanical_description, sample_formula)
                     VALUES (?, ?, ?, ?, ?, ?)";
         $stmt = $conn->prepare($addHerb) or die($conn->error);
-        $stmt->bind_param('ssssss', $herb_name, $symptoms, $medical_use, $Get_image_name, $botanical_description, $sample_formula);
+        $stmt->bind_param('ssssss', $herb_name, $symptoms, $medicinal_uses, $Get_image_name, $botanical_description, $sample_formula);
 
         $stmt->execute();
-        move_uploaded_file($_FILES['image_name']['tmp_name'], $image_Path);
+        move_uploaded_file($_FILES['image']['tmp_name'], $image_Path);
         
         $herb_id = $conn->insert_id;
         $stmt->close();
@@ -96,13 +96,13 @@ if(isset($_POST['addherb-btn'])) {
                 </div>
 
                 <div class="form-group">
-                    <label for="medical_use">Medicinal Uses: </label>
-                    <textarea name="medical_use" row="10" cols="30"  value="<?php echo $medical_use; ?>" class="form-control form-control-lg" required></textarea>
+                    <label for="medicinal_uses">Medicinal Uses: </label>
+                    <textarea name="medicinal_uses" row="10" cols="30"  value="<?php echo $medicinal_uses; ?>" class="form-control form-control-lg" required></textarea>
                 </div>
 
                 <div class="form-group">
-                    <label for="herb_description">Botanical Description: </label>
-                    <textarea name="herb_description" row="10" cols="30"  value="<?php echo $botanical_description; ?>" class="form-control form-control-lg" required></textarea>
+                    <label for="botanical_description">Botanical Description: </label>
+                    <textarea name="botanical_description" row="10" cols="30"  value="<?php echo $botanical_description; ?>" class="form-control form-control-lg" required></textarea>
                 </div>
 
                 <div class="form-group">
@@ -111,8 +111,8 @@ if(isset($_POST['addherb-btn'])) {
                 </div>
 
 				<div class=form-group>
-                    <label for="image_name">Image: </label>
-                    <input type="file" name="image_name">
+                    <label for="image">Image: </label>
+                    <input type="file" name="image">
                 </div>
 
                 <div>
