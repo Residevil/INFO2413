@@ -6,12 +6,12 @@ require_once 'config/db.php';
 
 if(isset($_POST['search-btn'])) {
     $search = $_POST['search'];
-    //$search = preg_replace("#[^0-9a-z\s]#i","",$search);
+    $search = preg_replace("#[^0-9a-z\s]#i","",$search);
 
     $words = explode(' ', $search);
     $regex = implode('|', $words);
 
-    $query = "SELECT * FROM herbs WHERE herb_name = '". $search ."'";
+    $query = "SELECT * FROM herbs WHERE herb_name REGEXP '{$regex}' OR symptoms REGEXP '{$regex}' OR medicinal_uses REGEXP '{$regex}' OR botanical_description  REGEXP '{$regex}' OR sample_formula REGEXP '{$regex}'";
     $result = $conn->query($query) or die($conn->error);
     $count = $result->num_rows;
     if($count == 0 || empty($search)){
