@@ -42,7 +42,7 @@ if(!$db_selected) {
             herb_name VARCHAR(50) NOT NULL ,
             symptoms VARCHAR(100) NOT NULL ,
             medicinal_uses VARCHAR(500) NOT NULL,
-            image_name VARCHAR(50) NOT NULL,
+            image VARCHAR(50) NOT NULL,
             botanical_description VARCHAR(500) NOT NULL,
             sample_formula VARCHAR (500) NOT NULL
         )";
