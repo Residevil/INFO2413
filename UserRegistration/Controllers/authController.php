@@ -67,8 +67,6 @@ if (isset($_POST['register-btn'])) {
     
     if(count($errors) === 0) {
         $password = password_hash($password, PASSWORD_DEFAULT);
-        $token = bin2hex(random_bytes(50));
-        $verified = false;
         
         $sql = "INSERT INTO users (username, email, password, usertype_id)
                 VALUES (?, ?, ?, ?)";
@@ -82,6 +80,7 @@ if (isset($_POST['register-btn'])) {
                 //flash message
                 $_SESSION['message'] = "New user is added successful";
                 $_SESSION['alert-class'] = "alert-success";
+                $ShowIndex="";
                 header('location: index.php');
                 exit();           
             }
@@ -138,8 +137,7 @@ if (isset($_POST['login-btn'])) {
             $_SESSION['id'] = $user['id'];
             $_SESSION['username'] = $user['username'];
             $_SESSION['email'] = $user['email'];
-            $_SESSION['verified'] = $user['verified'];
-            $_SESSION['usertype'] = $user['usertype'];
+            $_SESSION['usertype_id'] = $user['usertype_id'];
             //flash message
             $_SESSION['message'] = "Login successful";
             $_SESSION['alert-class'] = "alert-success";
@@ -158,8 +156,8 @@ if(isset($_GET['logout'])) {
     unset($_SESSION['id']);
     unset($_SESSION['username']);
     unset($_SESSION['email']);
-    unset($_SESSION['verified']);
     unset($_SESSION['usertype']);    
+    unset($_SESSION['usertype_id']); 
     header('location: login.php');
     exit(0);
 }
