@@ -9,7 +9,7 @@ if(isset($_GET['token'])) {
     verifyEmail($token);
 }
 
-if($_SESSION['usertype'] == "RegularUser") {
+if(isset($_SESSION['usertype_id']) && $_SESSION['usertype_id'] == "3") {
     $edit = 'hidden';
 } else {
     $edit = "visible";
@@ -50,7 +50,7 @@ if(isset($_POST['edit_delete'])) {
                 </div>
             <?php endif ?>
             
-            <h3> Welcome <?php echo $_SESSION['username']; ?></h3>
+            <h3> Welcome <?php if(isset($_SESSION['username'])) { echo $_SESSION['username'];} ?></h3>
 
             <form action="index.php" method="post">
                 <div>
@@ -81,7 +81,7 @@ if(isset($_POST['edit_delete'])) {
                     <h3>Symptoms: </h3>
                     <p><?php echo $_SESSION['symptoms']; ?></p>
                     <h3>Medicinal Uses: </h3>
-                    <p><?php echo $_SESSION['medicinal_uses']; ?></p>
+                    <p><?php echo $_SESSION['medical_use']; ?></p>
                     <h3>Botanical Description: </h3>
                     <p><?php echo $_SESSION['botanical_description']; ?></p> 
                     <h3>Sample Formula: </h3>		   
