@@ -24,7 +24,7 @@ if(!$db_selected) {
             usertype VARCHAR(50) NOT NULL
         )";
         $conn->query($user_type);
-        $userInsert = "INSERT INTO user_type (usertype) VALUES('Administrator'), ('Herbalist'), ('User')";
+        $userInsert = "INSERT INTO user_type (usertype) VALUES('Administrator'), ('Herbalist'), ('RegularUser')";
         $conn->query($userInsert);
         
         $users = "CREATE TABLE `users` (
@@ -33,18 +33,18 @@ if(!$db_selected) {
             email VARCHAR(50) NOT NULL UNIQUE, 
             password VARCHAR(100) NOT NULL,
             usertype_id INT(11) NOT NULL,
-    		FOREIGN KEY (usertype_id) REFERENCES user_type (id)
+            FOREIGN KEY (usertype_id) REFERENCES user_type (id)
         )";
         $conn->query($users);
 
         $herbs = "CREATE TABLE `herbs` (
             herb_id INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY, 
             herb_name VARCHAR(50) NOT NULL ,
-            symptoms VARCHAR(50) NOT NULL ,
-            image_name VARCHAR(50) NOT NULL, 
-            herb_description VARCHAR(100) NOT NULL,
-            medical_use VARCHAR (255) NOT NULL,
-            sample_formula VARCHAR (100) NOT NULL
+            symptoms VARCHAR(100) NOT NULL ,
+            medicinal_uses VARCHAR(500) NOT NULL,
+            image_name VARCHAR(50) NOT NULL,
+            botanical_description VARCHAR(500) NOT NULL,
+            sample_formula VARCHAR (500) NOT NULL
         )";
         $conn->query($herbs);
     }
