@@ -4,17 +4,17 @@ require_once 'Controllers/SearchEngine.php';
 require_once 'config/db.php';
 
 if(isset($_POST['ManageUser'])) {
-    $H = 'hidden';
+    $_SESSION['edit'] = "user";
     header('location: edit_delete.php');
 }
 
-if($_SESSION['usertype'] == "RegularUser") {
+if($_SESSION['usertype_id'] == 3) {
     $editH= 'hidden';
 } else {
     $editH = "visible";
 }
 
-if($_SESSION['usertype'] == "Administrator") {
+if($_SESSION['usertype_id'] == 1) {
     $editU = 'visible';
 } else {
     $editU = 'hidden';
@@ -25,7 +25,7 @@ if(isset($_POST['add'])) {
 }
 
 if(isset($_POST['edit_delete'])) {
-    $U = 'hidden';
+    $_SESSION['edit'] = "herb";
     header('location: edit_delete.php');
 }
 
@@ -43,7 +43,9 @@ if(isset($_POST['edit_delete'])) {
 </head>
 <body>
     <div>
-        <button name="ManageUser" style="float: left; visibility: <?php echo $editH; ?>;" class="btn btn-primary btn-lg">Manager User</button>
+        <form action="index.php" method="post">
+            <button name="ManageUser" style="float: left; visibility: <?php echo $editU; ?>;" class="btn btn-primary btn-lg">Manager User</button>
+        </form>
     </div>
     <div class="container">
     <div class="row">
