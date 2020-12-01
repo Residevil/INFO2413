@@ -9,7 +9,7 @@
 define('DB_HOST', 'localhost');
 define('DB_USER', 'root');
 define('DB_PASS', '');
-define('DB_NAME', 'INFO2413');
+define('DB_NAME', 'INFO 2413');
 
 $username = "";
 $email = "";
@@ -22,9 +22,10 @@ $output = '';
 
 $herb_name = '';
 $symptoms = '';
-$medicinal_uses = '';
+$medical_use = '';
 $image = '';
 $botanical_description = '';
 $sample_formula = '';
 
 ?>
+
