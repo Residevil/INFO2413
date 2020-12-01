@@ -3,16 +3,21 @@ require_once 'Controllers/authController.php';
 require_once 'Controllers/SearchEngine.php';
 require_once 'config/db.php';
 
-// verify the user using token
-if(isset($_GET['token'])) {
-    $token = $_GET['token'];
-    verifyEmail($token);
+if(isset($_POST['ManageUser'])) {
+    $H = 'hidden';
+    header('location: edit_delete.php');
 }
 
-if(isset($_SESSION['usertype_id']) && $_SESSION['usertype_id'] == "3") {
-    $edit = 'hidden';
+if($_SESSION['usertype'] == "RegularUser") {
+    $editH= 'hidden';
 } else {
-    $edit = "visible";
+    $editH = "visible";
+}
+
+if($_SESSION['usertype'] == "Administrator") {
+    $editU = 'visible';
+} else {
+    $editU = 'hidden';
 }
 
 if(isset($_POST['add'])) {
@@ -20,6 +25,7 @@ if(isset($_POST['add'])) {
 }
 
 if(isset($_POST['edit_delete'])) {
+    $U = 'hidden';
     header('location: edit_delete.php');
 }
 
@@ -36,6 +42,9 @@ if(isset($_POST['edit_delete'])) {
     <title>Homepage</title>
 </head>
 <body>
+    <div>
+        <button name="ManageUser" style="float: left; visibility: <?php echo $editH; ?>;" class="btn btn-primary btn-lg">Manager User</button>
+    </div>
     <div class="container">
     <div class="row">
         <div class="col-lg-8 offset-lg-2 form-div login">
@@ -50,12 +59,12 @@ if(isset($_POST['edit_delete'])) {
                 </div>
             <?php endif ?>
             
-            <h3> Welcome <?php if(isset($_SESSION['username'])) { echo $_SESSION['username'];} ?></h3>
+            <h3> Welcome <?php echo $_SESSION['username']; ?></h3>
 
             <form action="index.php" method="post">
                 <div>
-                    <button name="edit_delete" style="float: right; visibility: <?php echo $edit; ?>;">Edit/Delete Herb</button>
-                    <button name="add" style="float: right; visibility: <?php echo $edit; ?>;">Add Herb</button>          
+                    <button name="edit_delete" style="float: right; visibility: <?php echo $editH; ?>;">Edit/Delete Herb</button>
+                    <button name="add" style="float: right; visibility: <?php echo $editH; ?>;">Add Herb</button>          
                 </div>
             </form>
   
@@ -81,7 +90,7 @@ if(isset($_POST['edit_delete'])) {
                     <h3>Symptoms: </h3>
                     <p><?php echo $_SESSION['symptoms']; ?></p>
                     <h3>Medicinal Uses: </h3>
-                    <p><?php echo $_SESSION['medical_use']; ?></p>
+                    <p><?php echo $_SESSION['medicinal_uses']; ?></p>
                     <h3>Botanical Description: </h3>
                     <p><?php echo $_SESSION['botanical_description']; ?></p> 
                     <h3>Sample Formula: </h3>		   
